@@ -22,6 +22,7 @@ class Report(object):
             session = self.login()
             cookies = session.cookies
             getform = session.get("https://weixine.ustc.edu.cn/2020")
+            print(getform.url)
             retrycount = retrycount - 1
             if getform.url != "https://weixine.ustc.edu.cn/2020/home":
                 print("Login Failed! Retrying...")
