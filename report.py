@@ -7,6 +7,10 @@ import pytz
 import re
 import sys
 import argparse
+import PIL
+import io
+import tesseract
+from PIL import Image
 from bs4 import BeautifulSoup
 
 class Report(object):
@@ -79,6 +83,15 @@ class Report(object):
         return flag
 
     def login(self):
+        CAS_LT_url = 'https://passport.ustc.edu.cn/login?service=https%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin'
+        CAS_LT_res = requests.Session().get(CAS_LT_url)
+        CAS_LT_html = CAS_LT_res.content.decode()
+        CAS_LT = re.findall('(?<=name="CAS_LT" value=")(.*?)(?=")', CAS_LT_html)[0]
+        LT_url = 'https://passport.ustc.edu.cn/validatecode.jsp?type=login'
+        LT_img = requests.Session().get(LT_url).content
+        img = Image.open(BytesIO(LT_img))
+        text = pytesseract.image_to_string(img)
+        LT = re.sub("\D", "", text)
         url = "https://passport.ustc.edu.cn/login?service=http%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin"
         data = {
             'model': 'uplogin.jsp',
@@ -89,6 +102,8 @@ class Report(object):
             'showCode': '',
             'button': '',
         }
+        data["CAS_LT"]=CAS_LT
+        data["LT"]=LT
         session = requests.Session()
         session.post(url, data=data)
 
