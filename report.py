@@ -21,7 +21,7 @@ class Report(object):
 
     def report(self):
         loginsuccess = False
-        retrycount = 5
+        retrycount = 2
         while (not loginsuccess) and retrycount:
             session = self.login()
             cookies = session.cookies
