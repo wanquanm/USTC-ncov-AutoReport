@@ -86,30 +86,34 @@ class Report(object):
         return flag
 
     def login(self):
+        url = 'https://passport.ustc.edu.cn/login?service=https%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin'
+        data = {
+            'model': 'uplogin.jsp',
+            'CAS_LT': '',
+            'service': 'https://weixine.ustc.edu.cn/2020/caslogin',
+             'warn': '',
+            'showCode': '1',
+            'username': self.stuid,
+            'password': str(self.password),
+            'button': '',
+        }
+        session = requests.Session()
         CAS_LT_url = 'https://passport.ustc.edu.cn/login?service=https%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin'
-        CAS_LT_res = requests.Session().get(CAS_LT_url)
+        session.headers["User-Agent"]="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36 Edg/92.0.902.67"
+        CAS_LT_res = session.get(CAS_LT_url, params={"service": "https://weixine.ustc.edu.cn/2020/caslogin"})
         CAS_LT_html = CAS_LT_res.content.decode()
         CAS_LT = re.findall('(?<=name="CAS_LT" value=")(.*?)(?=")', CAS_LT_html)[0]
+        print(CAS_LT)
+        data["CAS_LT"]=CAS_LT
         LT_url = 'https://passport.ustc.edu.cn/validatecode.jsp?type=login'
-        LT_img = requests.Session().get(LT_url).content
-        img = Image.open(BytesIO(LT_img))
+        LT_img = session.get(LT_url).content
+        img = Image.open(io.BytesIO(LT_img))
         text = pytesseract.image_to_string(img)
         LT = re.sub("\D", "", text)
         print(CAS_LT)
         print(LT)
-        url = "https://passport.ustc.edu.cn/login?service=http%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin"
-        data = {
-            'model': 'uplogin.jsp',
-            'service': 'https://weixine.ustc.edu.cn/2020/caslogin',
-            'username': self.stuid,
-            'password': str(self.password),
-             'warn': '',
-            'showCode': '',
-            'button': '',
-        }
-        data["CAS_LT"]=CAS_LT
         data["LT"]=LT
-        session = requests.Session()
+        print(data)
         session.post(url, data=data)
 
         print("login...")
