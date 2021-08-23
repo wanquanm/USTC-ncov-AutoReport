@@ -92,6 +92,8 @@ class Report(object):
         img = Image.open(BytesIO(LT_img))
         text = pytesseract.image_to_string(img)
         LT = re.sub("\D", "", text)
+        print(CAS_LT)
+        print(LT)
         url = "https://passport.ustc.edu.cn/login?service=http%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin"
         data = {
             'model': 'uplogin.jsp',
