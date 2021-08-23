@@ -24,8 +24,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        apt install tesseract-ocr
-        apt install libtesseract-dev
     - name: Run report script
       env:
         STUID: ${{ secrets.Stuid }}
