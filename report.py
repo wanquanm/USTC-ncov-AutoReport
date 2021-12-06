@@ -39,6 +39,12 @@ class Report(object):
         if not loginsuccess:
             return False
         
+        data = getform.text
+        data = data.encode('ascii','ignore').decode('utf-8','ignore')
+        soup = BeautifulSoup(data, 'html.parser')
+        token = soup.find("input", {"name": "_token"})['value']
+
+        
         data1 = dict(
             _token=token,
             start_date=datetime.now().strftime('%Y-%m-%d'),
@@ -66,11 +72,7 @@ class Report(object):
         resp1=session.post(url1, data=data1, headers=headers1)
         
         
-        data = getform.text
-        data = data.encode('ascii','ignore').decode('utf-8','ignore')
-        soup = BeautifulSoup(data, 'html.parser')
-        token = soup.find("input", {"name": "_token"})['value']
-
+        
         with open(self.data_path, "r+") as f:
             data = f.read()
             data = json.loads(data)
