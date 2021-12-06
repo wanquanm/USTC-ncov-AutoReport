@@ -46,39 +46,41 @@ class Report(object):
         token = soup.find("input", {"name": "_token"})['value']
 
         
-        data1 = dict(
-            _token=token,
-            start_date=datetime.now().strftime('%Y-%m-%d'),
-            end_date=(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
-        )
+        today = datetime.now().weekday() + 1
+        if(today == 1):
+            data1 = dict(
+                _token=token,
+                start_date=datetime.now().strftime('%Y-%m-%d'),
+                end_date=(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
+            )
 
-        header1 = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-encoding': 'gzip, deflate, br',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'cache-control': 'max-age=0',
-        'content-length': '480',
-        'content-type': 'application/x-www-form-urlencoded',
-        'origin': 'https://weixine.ustc.edu.cn',
-        'referer': 'https://weixine.ustc.edu.cn/2020/apply/daliy',
-        'sec-fetch-dest': 'document',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'same-origin',
-        'sec-fetch-user': '?1',
-        'upgrade-insecure-requests': '1'
-        }
+            header1 = {
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'accept-encoding': 'gzip, deflate, br',
+                'accept-language': 'zh-CN,zh;q=0.9',
+                'cache-control': 'max-age=0',
+                'content-length': '480',
+                'content-type': 'application/x-www-form-urlencoded',
+                'origin': 'https://weixine.ustc.edu.cn',
+                'referer': 'https://weixine.ustc.edu.cn/2020/apply/daliy',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1'
+            }
 
-        url1 = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
-        resp1=session.post(url1, data=data1, headers=header1)
-        print(resp1.status_code)
-        if resp1.status_code != 200:
-            print("error")
+            url1 = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
+            resp1=session.post(url1, data=data1, headers=header1)
+            print(resp1.status_code)
+            if resp1.status_code != 200:
+                print("error")
+            else:
+                print("Weekly report success")
         else:
-            print("Weekly report success")
-        
-        
-        
+            print("Not today for weekly report")
+                      
         with open(self.data_path, "r+") as f:
             data = f.read()
             data = json.loads(data)
@@ -109,8 +111,8 @@ class Report(object):
             date = pattern.search(token.text).group()
             print("Latest report: " + date)
             date = date + " +0800"
-            reporttime = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
-            timenow = datetime.datetime.now(pytz.timezone('Asia/Shanghai'))
+            reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
+            timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
             delta = timenow - reporttime
             print("{} second(s) before.".format(delta.seconds))
             if delta.seconds < 120:
