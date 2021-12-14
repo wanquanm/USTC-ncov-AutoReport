@@ -89,8 +89,8 @@ class Report(object):
         else:
             print("Report SUCCESSFUL!")
         
-        curr_date = datetime.datetime.now().strftime("%Y-%m-%d")
-        next_date = (datetime.datetime.now()+datetime.timedelta(days=6)).strftime("%Y-%m-%d")
+        curr_date = datetime.now().strftime("%Y-%m-%d")
+        next_date = (datetime.now()+timedelta(days=6)).strftime("%Y-%m-%d")
         report_url = 'https://weixine.ustc.edu.cn/2020/apply/daliy/post'
         report_data = {
             '_token': _token,
@@ -107,6 +107,7 @@ class Report(object):
         else:
             print("Weekly report success")
         print(report_html)
+        print(resp1.text)
             
         return flag
 
