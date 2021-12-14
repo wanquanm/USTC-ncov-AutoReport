@@ -88,38 +88,24 @@ class Report(object):
             print("Report FAILED!")
         else:
             print("Report SUCCESSFUL!")
-            
-        data1 = dict(
-                _token=token,
-                start_date=datetime.now().strftime('%Y-%m-%d'),
-                end_date=(datetime.now() + timedelta(days=6)).strftime('%Y-%m-%d')
-                )
+        
+        curr_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        next_date = (datetime.datetime.now()+datetime.timedelta(days=6)).strftime("%Y-%m-%d")
+        report_url = 'https://weixine.ustc.edu.cn/2020/apply/daliy/post'
+        report_data = {
+            '_token': _token,
+            'start_date': curr_date,
+            'end_date': next_date
+        }
+        resp1 = session.post(report_url, data=report_data)
+        report_html = resp1.content.decode('utf-8')
+        
 
-        header1 = {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-                'accept-encoding': 'gzip, deflate, br',
-                'accept-language': 'zh-CN,zh;q=0.9',
-                'cache-control': 'max-age=0',
-                'content-length': '480',
-                'content-type': 'application/x-www-form-urlencoded',
-                'origin': 'https://weixine.ustc.edu.cn',
-                'referer': 'https://weixine.ustc.edu.cn/2020/apply/daliy',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1'
-                }
-
-        url1 = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
-        resp1=session.post(url1, data=data1)
         print(resp1.status_code)
         if resp1.status_code != 200:
             print("error")
         else:
             print("Weekly report success")
-        report_html = resp1.content.decode('utf-8')
         print(report_html)
             
         return flag
