@@ -89,25 +89,38 @@ class Report(object):
         else:
             print("Report SUCCESSFUL!")
         
-        curr_date = datetime.now().strftime("%Y-%m-%d")
-        next_date = (datetime.now()+timedelta(days=6)).strftime("%Y-%m-%d")
-        report_url = 'https://weixine.ustc.edu.cn/2020/apply/daliy/post'
-        report_data = {
-            '_token': token,
-            'start_date': curr_date,
-            'end_date': next_date
-        }
-        resp1 = session.post(report_url, data=report_data)
-        report_html = resp1.content.decode('utf-8')
-        
+        getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy")
+        data = getform.text
+        data = data.encode('ascii','ignore').decode('utf-8','ignore')
+        soup = BeautifulSoup(data, 'html.parser')
+        token = soup.find("input", {"name": "_token"})['value']
+        start_date = soup.find("input", {"id": "start_date"})['value']
+        end_date = soup.find("input", {"id": "end_date"})['value']
 
-        print(resp1.status_code)
-        if resp1.status_code != 200:
-            print("error")
-        else:
-            print("Weekly report success")
-        print(report_html)
-        print(resp1.text)
+        url = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
+        data2={}
+        data2["_token"]=token
+        data2["start_date"]=start_date
+        data2["end_date"]=end_date
+
+        post_data=session.post(url, data=data2, headers=headers)
+        data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
+
+        soup = BeautifulSoup(data, 'html.parser')
+        date = soup.find(text=pattern)
+        if data:
+            print("Latest apply: " + date)
+            date = date + " +0800"
+            reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
+            timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
+            delta = timenow - reporttime
+            print("{} second(s) before.".format(delta.seconds))
+            if delta.seconds < 120:
+                flag = True
+            if flag == False:
+                print("Apply FAILED!")
+            else:
+               print("Apply SUCCESSFUL!")
             
         return flag
 
