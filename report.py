@@ -39,35 +39,35 @@ class Report(object):
                 loginsuccess = True
         if not loginsuccess:
             return False
-        
+
         data = getform.text
         data = data.encode('ascii','ignore').decode('utf-8','ignore')
         soup = BeautifulSoup(data, 'html.parser')
         token = soup.find("input", {"name": "_token"})['value']
 
-        
+
             data1 = dict(
-                _token=token,
-                start_date=datetime.now().strftime('%Y-%m-%d'),
-                end_date=(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
-            )
+                    _token=token,
+                    start_date=datetime.now().strftime('%Y-%m-%d'),
+                    end_date=(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
+                    )
 
             header1 = {
-                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-                'accept-encoding': 'gzip, deflate, br',
-                'accept-language': 'zh-CN,zh;q=0.9',
-                'cache-control': 'max-age=0',
-                'content-length': '480',
-                'content-type': 'application/x-www-form-urlencoded',
-                'origin': 'https://weixine.ustc.edu.cn',
-                'referer': 'https://weixine.ustc.edu.cn/2020/apply/daliy',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1'
-            }
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+                    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                    'accept-encoding': 'gzip, deflate, br',
+                    'accept-language': 'zh-CN,zh;q=0.9',
+                    'cache-control': 'max-age=0',
+                    'content-length': '480',
+                    'content-type': 'application/x-www-form-urlencoded',
+                    'origin': 'https://weixine.ustc.edu.cn',
+                    'referer': 'https://weixine.ustc.edu.cn/2020/apply/daliy',
+                    'sec-fetch-dest': 'document',
+                    'sec-fetch-mode': 'navigate',
+                    'sec-fetch-site': 'same-origin',
+                    'sec-fetch-user': '?1',
+                    'upgrade-insecure-requests': '1'
+                    }
 
             url1 = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
             resp1=session.post(url1, data=data1, headers=header1)
@@ -76,24 +76,24 @@ class Report(object):
                 print("error")
             else:
                 print("Weekly report success")
-                      
+
         with open(self.data_path, "r+") as f:
             data = f.read()
             data = json.loads(data)
             data["_token"]=token
 
         headers = {
-            'authority': 'weixine.ustc.edu.cn',
-            'origin': 'https://weixine.ustc.edu.cn',
-            'upgrade-insecure-requests': '1',
-            'content-type': 'application/x-www-form-urlencoded',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36',
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-            'referer': 'https://weixine.ustc.edu.cn/2020/home',
-            'accept-language': 'zh-CN,zh;q=0.9',
-            'Connection': 'close',
-            'cookie': "PHPSESSID=" + cookies.get("PHPSESSID") + ";XSRF-TOKEN=" + cookies.get("XSRF-TOKEN") + ";laravel_session="+cookies.get("laravel_session"),
-        }
+                'authority': 'weixine.ustc.edu.cn',
+                'origin': 'https://weixine.ustc.edu.cn',
+                'upgrade-insecure-requests': '1',
+                'content-type': 'application/x-www-form-urlencoded',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'referer': 'https://weixine.ustc.edu.cn/2020/home',
+                'accept-language': 'zh-CN,zh;q=0.9',
+                'Connection': 'close',
+                'cookie': "PHPSESSID=" + cookies.get("PHPSESSID") + ";XSRF-TOKEN=" + cookies.get("XSRF-TOKEN") + ";laravel_session="+cookies.get("laravel_session"),
+                }
 
         url = "https://weixine.ustc.edu.cn/2020/daliy_report"
         resp=session.post(url, data=data, headers=headers)
@@ -101,7 +101,7 @@ class Report(object):
         soup = BeautifulSoup(data, 'html.parser')
         pattern = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
         token = soup.find(
-            "span", {"style": "position: relative; top: 5px; color: #666;"})
+                "span", {"style": "position: relative; top: 5px; color: #666;"})
         flag = False
         if pattern.search(token.text) is not None:
             date = pattern.search(token.text).group()
@@ -122,15 +122,15 @@ class Report(object):
     def login(self):
         url = 'https://passport.ustc.edu.cn/login?service=https%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin'
         data = {
-            'model': 'uplogin.jsp',
-            'CAS_LT': '',
-            'service': 'https://weixine.ustc.edu.cn/2020/caslogin',
-             'warn': '',
-            'showCode': '1',
-            'username': self.stuid,
-            'password': str(self.password),
-            'button': '',
-        }
+                'model': 'uplogin.jsp',
+                'CAS_LT': '',
+                'service': 'https://weixine.ustc.edu.cn/2020/caslogin',
+                'warn': '',
+                'showCode': '1',
+                'username': self.stuid,
+                'password': str(self.password),
+                'button': '',
+                }
         session = requests.Session()
         CAS_LT_url = 'https://passport.ustc.edu.cn/login?service=https%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin'
         session.headers["User-Agent"]="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36 Edg/92.0.902.67"
