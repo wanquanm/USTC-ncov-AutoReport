@@ -120,7 +120,7 @@ class Report(object):
         else:
             print("Weekly report success")
         report_html = resp1.content.decode('utf-8')
-        print report_html
+        print(report_html)
             
         return flag
 
