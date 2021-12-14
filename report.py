@@ -46,8 +46,6 @@ class Report(object):
         token = soup.find("input", {"name": "_token"})['value']
 
         
-        today = datetime.now().weekday() + 1
-        if(today == 1):
             data1 = dict(
                 _token=token,
                 start_date=datetime.now().strftime('%Y-%m-%d'),
@@ -78,8 +76,6 @@ class Report(object):
                 print("error")
             else:
                 print("Weekly report success")
-        else:
-            print("Not today for weekly report")
                       
         with open(self.data_path, "r+") as f:
             data = f.read()
