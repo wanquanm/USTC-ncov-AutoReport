@@ -70,12 +70,12 @@ class Report(object):
                 }
 
         url1 = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
-            resp1=session.post(url1, data=data1, headers=header1)
-            print(resp1.status_code)
-            if resp1.status_code != 200:
-                print("error")
-            else:
-                print("Weekly report success")
+        resp1=session.post(url1, data=data1, headers=header1)
+        print(resp1.status_code)
+        if resp1.status_code != 200:
+            print("error")
+        else:
+            print("Weekly report success")
 
         with open(self.data_path, "r+") as f:
             data = f.read()
