@@ -93,7 +93,7 @@ class Report(object):
         next_date = (datetime.now()+timedelta(days=6)).strftime("%Y-%m-%d")
         report_url = 'https://weixine.ustc.edu.cn/2020/apply/daliy/post'
         report_data = {
-            '_token': _token,
+            '_token': token,
             'start_date': curr_date,
             'end_date': next_date
         }
