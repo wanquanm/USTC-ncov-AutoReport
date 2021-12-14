@@ -92,7 +92,7 @@ class Report(object):
         data1 = dict(
                 _token=token,
                 start_date=datetime.now().strftime('%Y-%m-%d'),
-                end_date=(datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
+                end_date=(datetime.now() + timedelta(days=6)).strftime('%Y-%m-%d')
                 )
 
         header1 = {
@@ -113,12 +113,14 @@ class Report(object):
                 }
 
         url1 = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
-        resp1=session.post(url1, data=data1, headers=header1)
+        resp1=session.post(url1, data=data1)
         print(resp1.status_code)
         if resp1.status_code != 200:
             print("error")
         else:
             print("Weekly report success")
+        report_html = resp1.content.decode('utf-8')
+        print report_html
             
         return flag
 
