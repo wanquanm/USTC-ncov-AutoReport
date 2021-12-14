@@ -88,39 +88,42 @@ class Report(object):
             print("Report FAILED!")
         else:
             print("Report SUCCESSFUL!")
-        
-        getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy")
-        data = getform.text
-        data = data.encode('ascii','ignore').decode('utf-8','ignore')
-        soup = BeautifulSoup(data, 'html.parser')
-        token = soup.find("input", {"name": "_token"})['value']
-        start_date = soup.find("input", {"id": "start_date"})['value']
-        end_date = soup.find("input", {"id": "end_date"})['value']
+        today = datetime.now().weekday() + 1
+        if(today == 1):
+            getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy")
+            data = getform.text
+            data = data.encode('ascii','ignore').decode('utf-8','ignore')
+            soup = BeautifulSoup(data, 'html.parser')
+            token = soup.find("input", {"name": "_token"})['value']
+            start_date = soup.find("input", {"id": "start_date"})['value']
+            end_date = soup.find("input", {"id": "end_date"})['value']
 
-        url = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
-        data2={}
-        data2["_token"]=token
-        data2["start_date"]=start_date
-        data2["end_date"]=end_date
+            url = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
+            data2={}
+            data2["_token"]=token
+            data2["start_date"]=start_date
+            data2["end_date"]=end_date
 
-        post_data=session.post(url, data=data2, headers=headers)
-        data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
+            post_data=session.post(url, data=data2, headers=headers)
+            data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
 
-        soup = BeautifulSoup(data, 'html.parser')
-        date = soup.find(text=pattern)
-        if data:
-            print("Latest apply: " + date)
-            date = date + " +0800"
-            reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
-            timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
-            delta = timenow - reporttime
-            print("{} second(s) before.".format(delta.seconds))
-            if delta.seconds < 120:
-                flag = True
-            if flag == False:
-                print("Apply FAILED!")
-            else:
-               print("Apply SUCCESSFUL!")
+            soup = BeautifulSoup(data, 'html.parser')
+            date = soup.find(text=pattern)
+            if data:
+                print("Latest apply: " + date)
+                date = date + " +0800"
+                reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
+                timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
+                delta = timenow - reporttime
+                print("{} second(s) before.".format(delta.seconds))
+                if delta.seconds < 120:
+                    flag = True
+                if flag == False:
+                    print("Apply FAILED!")
+                else:
+                    print("Apply SUCCESSFUL!")
+        else:
+            print("Not day for weekly report")
             
         return flag
 
