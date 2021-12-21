@@ -122,6 +122,8 @@ class Report(object):
                     print("Apply FAILED!")
                 else:
                     print("Apply SUCCESSFUL!")
+            else:
+                print("Apply FAILED!")
         else:
             print("Not day for weekly report")
             
