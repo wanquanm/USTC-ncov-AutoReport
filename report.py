@@ -92,7 +92,7 @@ class Report(object):
         if(today == 2):
             getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy")
             data = getform.text
-            print data
+            print(data)
             data = data.encode('ascii','ignore').decode('utf-8','ignore')
             soup = BeautifulSoup(data, 'html.parser')
             token = soup.find("input", {"name": "_token"})['value']
@@ -108,7 +108,7 @@ class Report(object):
             post_data=session.post(url, data=data2, headers=headers)
             data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
             print "======================="
-            print data
+            print(data)
 
             soup = BeautifulSoup(data, 'html.parser')
             date = soup.find(text=pattern)
