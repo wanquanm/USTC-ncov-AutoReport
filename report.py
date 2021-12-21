@@ -107,7 +107,7 @@ class Report(object):
 
             post_data=session.post(url, data=data2, headers=headers)
             data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
-            print "======================="
+            print("=======================")
             print(data)
 
             soup = BeautifulSoup(data, 'html.parser')
