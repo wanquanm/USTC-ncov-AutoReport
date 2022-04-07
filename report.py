@@ -172,8 +172,10 @@ if __name__ == "__main__":
     parser.add_argument('data_path', help='path to your own data used for post method', type=str)
     parser.add_argument('stuid', help='your student number', type=str)
     parser.add_argument('password', help='your CAS password', type=str)
+    parser.add_argument('parentname', help='your parent name', type=str)
+    parser.add_argument('phone', help='your parent phone', type=str)
     args = parser.parse_args()
-    autorepoter = Report(stuid=args.stuid, password=args.password, data_path=args.data_path)
+    autorepoter = Report(stuid=args.stuid, password=args.password, data_path=args.data_path, parentname=args.parentname, phone=args.phone)
     count = 5
     while count != 0:
         ret = autorepoter.report()
