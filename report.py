@@ -18,7 +18,7 @@ import pytesseract
 from bs4 import BeautifulSoup
 
 class Report(object):
-    def __init__(self, stuid, password, data_path):
+    def __init__(self, data_path, stuid, password, parentname, phone):
         self.stuid = stuid
         self.password = password
         self.data_path = data_path
