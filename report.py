@@ -22,7 +22,9 @@ class Report(object):
         self.stuid = stuid
         self.password = password
         self.data_path = data_path
-
+        self.parentname = parentname
+        self.phone = phone
+        
     def report(self):
         loginsuccess = False
         retrycount = 2
@@ -95,16 +97,17 @@ class Report(object):
             data = data.encode('ascii','ignore').decode('utf-8','ignore')
             soup = BeautifulSoup(data, 'html.parser')
             token = soup.find("input", {"name": "_token"})['value']
-            start_date = datetime.now().strftime('%Y-%m-%d')
-            end_date = (datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
+            start_date = soup.find("input", {"id": "start_date"})['value']
+            end_date = soup.find("input", {"id": "end_date"})['value']
 
             url = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
             data2={}
             data2["_token"]=token
             data2["start_date"]=start_date
             data2["end_date"]=end_date
-
-            post_data=session.post(url, data=data2, headers=headers)
+            data2["return_college[]"]= ["东校区", "西校区"]
+            
+            #post_data=session.post(url, data=data2, headers=headers)
             data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
 
             soup = BeautifulSoup(data, 'html.parser')
