@@ -72,11 +72,11 @@ class Report(object):
 
         url = "https://weixine.ustc.edu.cn/2020/daliy_report"
         resp=session.post(url, data=data, headers=headers)
-#        data = session.get("https://weixine.ustc.edu.cn/2020").text
-#        soup = BeautifulSoup(data, 'html.parser')
-#        pattern = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-#        token = soup.find(
-#                "span", {"style": "position: relative; top: 5px; color: #666;"})
+        data = session.get("https://weixine.ustc.edu.cn/2020").text
+        soup = BeautifulSoup(data, 'html.parser')
+        pattern = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
+        token = soup.find(
+                "span", {"style": "position: relative; top: 5px; color: #666;"})
         flag = True
 #        if pattern.search(token.text) is not None:
 #            date = pattern.search(token.text).group()
