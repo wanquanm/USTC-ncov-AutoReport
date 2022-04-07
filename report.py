@@ -78,8 +78,8 @@ class Report(object):
         token = soup.find(
                 "span", {"style": "position: relative; top: 5px; color: #666;"})
         flag = False
-        if pattern.search(token) is not None:
-            date = pattern.search(token).group()
+        if pattern.search(token.text) is not None:
+            date = pattern.search(token.text).group()
             print("Latest report: " + date)
             date = date + " +0800"
             reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
