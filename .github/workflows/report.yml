@@ -29,5 +29,7 @@ jobs:
       env:
         STUID: ${{ secrets.Stuid }}
         PASSWORD: ${{ secrets.Password }}
+        PHONE: ${{ secrets.Phone }}
+        PARENTNAME: ${{ secrets.Parentname }}
       run: |
-        python report.py data.json "$STUID" "$PASSWORD"
+        python report.py data.json "$STUID" "$PASSWORD" "$PARENTNAME" "$PHONE" 
