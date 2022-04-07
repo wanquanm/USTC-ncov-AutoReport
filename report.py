@@ -24,7 +24,7 @@ class Report(object):
         self.data_path = data_path
         self.parentname = parentname
         self.phone = phone
-        
+
     def report(self):
         loginsuccess = False
         retrycount = 2
@@ -54,6 +54,8 @@ class Report(object):
             data = f.read()
             data = json.loads(data)
             data["_token"]=token
+            data["jinji_lxr"]=self.parentname
+            data["jiji_mobile"]=self.phone
 
         headers = {
                 'authority': 'weixine.ustc.edu.cn',
@@ -92,7 +94,7 @@ class Report(object):
             print("Report SUCCESSFUL!")
         today = datetime.now().weekday() + 1
         if(today == 2 or today==3 or today==4 or today==5 or today==6 or today==7 or today==1):
-            getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy")
+            getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=23")
             data = getform.text
             data = data.encode('ascii','ignore').decode('utf-8','ignore')
             soup = BeautifulSoup(data, 'html.parser')
@@ -106,8 +108,8 @@ class Report(object):
             data2["start_date"]=start_date
             data2["end_date"]=end_date
             data2["return_college[]"]= ["东校区", "西校区"]
-            
-            #post_data=session.post(url, data=data2, headers=headers)
+
+            #post_data=session.post(url, data=data2)
             data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
 
             soup = BeautifulSoup(data, 'html.parser')
@@ -175,7 +177,7 @@ if __name__ == "__main__":
     parser.add_argument('parentname', help='your parent name', type=str)
     parser.add_argument('phone', help='your parent phone', type=str)
     args = parser.parse_args()
-    autorepoter = Report(stuid=args.stuid, password=args.password, data_path=args.data_path, parentname=args.parentname, phone=args.phone)
+    autorepoter = Report(data_path=args.data_path, stuid=args.stuid, password=args.password, parentname=args.parentname, phone=args.phone)
     count = 5
     while count != 0:
         ret = autorepoter.report()
