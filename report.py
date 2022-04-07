@@ -72,26 +72,26 @@ class Report(object):
 
         url = "https://weixine.ustc.edu.cn/2020/daliy_report"
         resp=session.post(url, data=data, headers=headers)
-        data = session.get("https://weixine.ustc.edu.cn/2020").text
-        soup = BeautifulSoup(data, 'html.parser')
-        pattern = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-        token = soup.find(
-                "span", {"style": "position: relative; top: 5px; color: #666;"})
-        flag = False
-        if pattern.search(token.text) is not None:
-            date = pattern.search(token.text).group()
-            print("Latest report: " + date)
-            date = date + " +0800"
-            reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
-            timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
-            delta = timenow - reporttime
-            print("{} second(s) before.".format(delta.seconds))
-            if delta.seconds < 120:
-                flag = True
-        if flag == False:
-            print("Report FAILED!")
-        else:
-            print("Report SUCCESSFUL!")
+#        data = session.get("https://weixine.ustc.edu.cn/2020").text
+#        soup = BeautifulSoup(data, 'html.parser')
+#        pattern = re.compile("202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
+#        token = soup.find(
+#                "span", {"style": "position: relative; top: 5px; color: #666;"})
+        flag = True
+#        if pattern.search(token.text) is not None:
+#            date = pattern.search(token.text).group()
+#            print("Latest report: " + date)
+#            date = date + " +0800"
+#            reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
+#            timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
+#            delta = timenow - reporttime
+#            print("{} second(s) before.".format(delta.seconds))
+#            if delta.seconds < 120:
+#                flag = True
+#        if flag == False:
+#            print("Report FAILED!")
+#        else:
+#            print("Report SUCCESSFUL!")
         today = datetime.now().weekday() + 1
         if(today == 2 or today==3 or today==4 or today==5 or today==6 or today==7 or today==1):
             getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=23")
