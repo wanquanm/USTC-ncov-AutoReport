@@ -93,7 +93,8 @@ class Report(object):
 #        else:
 #            print("Report SUCCESSFUL!")
 #        today = datetime.now().weekday() + 1
-        if(today == 2 or today==3 or today==4 or today==5 or today==6 or today==7 or today==1):
+#        if(today == 2 or today==3 or today==4 or today==5 or today==6 or today==7 or today==1):
+        if(0==1):
             getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=23")
             data = getform.text
             data = data.encode('ascii','ignore').decode('utf-8','ignore')
@@ -110,29 +111,29 @@ class Report(object):
             data2["return_college[]"]= ["东校区", "西校区"]
 
             #post_data=session.post(url, data=data2)
-            data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
+            #data = session.get("https://weixine.ustc.edu.cn/2020/apply_total?t=d").text
 
             soup = BeautifulSoup(data, 'html.parser')
-            date = soup.find(text=pattern)
-            if data:
-                print("Latest apply: " + date)
-                date = date + " +0800"
-                reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
-                timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
-                delta = timenow - reporttime
-                print("{} second(s) before.".format(delta.seconds))
-                if delta.seconds < 120:
-                    flag = True
-                if flag == False:
-                    print("Apply FAILED!")
-                else:
-                    print("Apply SUCCESSFUL!")
-            else:
-                print("Apply FAILED!")
+#            date = soup.find(text=pattern)
+#            if data:
+#                print("Latest apply: " + date)
+#                date = date + " +0800"
+#                reporttime = datetime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
+#                timenow = datetime.now(pytz.timezone('Asia/Shanghai'))
+#                delta = timenow - reporttime
+#                print("{} second(s) before.".format(delta.seconds))
+#                if delta.seconds < 120:
+#                    flag = True
+#                if flag == False:
+#                    print("Apply FAILED!")
+#                else:
+#                    print("Apply SUCCESSFUL!")
+#            else:
+#                print("Apply FAILED!")
         else:
             print("Not day for weekly report")
             
-        return flag
+        #return flag
 
     def login(self):
         url = 'https://passport.ustc.edu.cn/login?service=https%3A%2F%2Fweixine.ustc.edu.cn%2F2020%2Fcaslogin'
