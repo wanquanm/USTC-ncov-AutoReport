@@ -92,7 +92,7 @@ class Report(object):
 #            print("Report FAILED!")
 #        else:
 #            print("Report SUCCESSFUL!")
-        today = datetime.now().weekday() + 1
+#        today = datetime.now().weekday() + 1
         if(today == 2 or today==3 or today==4 or today==5 or today==6 or today==7 or today==1):
             getform = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=23")
             data = getform.text
